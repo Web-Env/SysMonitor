@@ -53,8 +53,9 @@ namespace SysMonitor.Service.Helpers
             return hardwareReport;
         }
 
-        public static void Monitor(IMapper mapper)
+        public static List<FanModel> Monitor(IMapper mapper)
         {
+            var fans = new List<FanModel>();
             Computer computer = new Computer()
             {
                 IsCpuEnabled = true,
@@ -89,6 +90,8 @@ namespace SysMonitor.Service.Helpers
                     if (cpuFan != null)
                         cpuFan.FanType = FanType.Cpu;
 
+                    fans = fanSensorModels;
+
                     //var fanSensorJson = JsonConvert.SerializeObject(fanSensorModels);
                     //Console.WriteLine(fanSensorJson);
                     //var trimmedJson = fanSensorJson.Remove(0, 1).Remove(fanSensorJson.Length - 2, 1);
@@ -104,6 +107,7 @@ namespace SysMonitor.Service.Helpers
             }
 
             computer.Close();
+            return fans;
         }
 
         private static TModel MapHardwareClassToModel<TEntity, TModel>(IMapper mapper, TEntity hardwareClass)

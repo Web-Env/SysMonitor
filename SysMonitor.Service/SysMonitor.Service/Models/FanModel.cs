@@ -7,7 +7,7 @@
         Gpu
     }
 
-    public  class FanModel
+    public class FanModel
     {
         public FanType FanType { get; set; }
 

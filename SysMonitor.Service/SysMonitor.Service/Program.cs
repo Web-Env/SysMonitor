@@ -1,13 +1,30 @@
-using SysMonitor.Service;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SysMonitor.Service.Extensions;
+using System;
+using System.ServiceProcess;
 
-IHost host = Host.CreateDefaultBuilder(args)
-    .UseWindowsService()
-    .ConfigureServices(services =>
+namespace SysMonitor.Service
+{
+    internal static class Program
     {
-        services.AddHostedService<Worker>();
-        services.AddCustomMappers();
-    })
-    .Build();
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
 
-await host.RunAsync();
+        private static IServiceProvider _serviceProvider;
+
+        static void Main()
+        {
+            var servicesCollection = new ServiceCollection();
+            servicesCollection.AddCustomMappers();
+            _serviceProvider = servicesCollection.BuildServiceProvider();
+
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[]
+            {
+                new ReportingService()
+            };
+            ServiceBase.Run(ServicesToRun);
+        }
+    }
+}

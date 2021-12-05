@@ -9,7 +9,7 @@ namespace SysMonitor.Service.Mappers
         public HardwareClassToModelProfile()
         {
             CreateMap<ISensor, FanModel>()
-                .ForMember(dest => dest.Rpm, src => src.MapFrom(src => src.Value));
+                .ForMember(dest => dest.Rpm, src => src.MapFrom(sensor => sensor.Value));
         }
     }
 }
