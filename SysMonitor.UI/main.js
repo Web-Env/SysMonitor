@@ -69,8 +69,7 @@ app.on("ready", () => {
                 //console.log('Client: on connection');
             })
             
-            client.on('data', function(data) {
-                console.log ("Data")
+            client.on('data', (data) => {
                 console.log(data.toString());
 
                 window.webContents.send("report", data.toString());
@@ -84,7 +83,7 @@ app.on("ready", () => {
             client.on('error', (e) => {
                 console.log (e)
             })
-        }, 10000);
+        }, 1000);
 
         //var pipe = NamedPipes.connect(PIPE_NAME);
 

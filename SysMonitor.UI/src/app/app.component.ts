@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ipcRenderer } from 'electron';
 
 @Component({
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
     report = "";
 
-    constructor() { }
+    constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
     ngOnInit() {
         // if (this.electronService.isElectronApp) {
@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
         this.ipc.on("report", (event, data) => {
             console.log(data)
             this.report = data;
+            console.log(this.report)
+            this.changeDetectorRef.detectChanges();
         });
     }
 }
