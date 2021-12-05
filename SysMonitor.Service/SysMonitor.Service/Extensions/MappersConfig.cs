@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using SysMonitor.Service.Mappers;
 
 namespace SysMonitor.Service.Extensions
