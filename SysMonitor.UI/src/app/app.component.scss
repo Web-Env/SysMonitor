@@ -1,0 +1,43 @@
+#Shape_327_{
+    //transition: all linear;
+
+    transform-box: fill-box;
+    transform-origin: center;
+    //transform: rotate(360deg);
+
+    -webkit-animation: rotating infinite linear forwards;
+    -moz-animation: rotating infinite linear forwards;
+    -ms-animation: rotating infinite linear forwards;
+    -o-animation: rotating infinite linear forwards;
+    animation: rotating  linear infinite forwards;
+}
+
+@-webkit-keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.fan-container {
+    width: 150px;
+    height: 150px;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
