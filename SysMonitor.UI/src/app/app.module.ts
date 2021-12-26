@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SparklineComponent } from './sparkline/sparkline.component';
 import { FanComponent } from './fan/fan.component';
+import { FansContainerComponent } from './fans-container/fans-container.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         SparklineComponent,
-        FanComponent
+        FanComponent,
+        FansContainerComponent
     ],
     imports: [
         AppRoutingModule,

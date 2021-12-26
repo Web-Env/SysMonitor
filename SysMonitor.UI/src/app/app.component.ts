@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer } from 'electron';
 import { FanComponent } from "./fan/fan.component";
+import { FansContainerComponent } from "./fans-container/fans-container.component";
 import { SparklineComponent } from "./sparkline/sparkline.component";
 
 @Component({
@@ -14,12 +15,14 @@ export class AppComponent implements AfterViewInit, OnInit {
     animationDurationStyle = `${this.animationDuration}s`;
     newAnimationDuration: number = 0;
     rampingUpAnimation: boolean = false;
+
+    fans!: Array<number>;
     
     @ViewChild(SparklineComponent)
     private sparkline!: SparklineComponent;
 
-    @ViewChild(FanComponent)
-    private fan!: FanComponent;
+    @ViewChild(FansContainerComponent)
+    private fansContainer!: FansContainerComponent;
 
     private ipc!: typeof ipcRenderer;
 
@@ -32,38 +35,48 @@ export class AppComponent implements AfterViewInit, OnInit {
         this.ipc = window.require('electron').ipcRenderer;
 
         this.ipc.on("report", (event, data) => {
-            this.report = data;
-            this.changeDetectorRef.detectChanges();
+            // this.report = data;
+            // this.changeDetectorRef.detectChanges();
 
             let jsonData = JSON.parse(data);
-            this.fan.updateFanSpeed(parseInt(jsonData[0]["Rpm"]));
+            // this.fan.updateFanSpeed(parseInt(jsonData[0]["Rpm"]));
+
+            var fanData = jsonData.map((fan: any) => { return fan["Rpm"] });
+
+            if (this.fans === undefined) {
+                this.fans = fanData;
+                this.changeDetectorRef.detectChanges();
+            }
+            else {
+                this.fansContainer.updateFanSpeeds(fanData);
+            }
         });
 
-        window.setInterval(() => {
-            this.newAnimationDuration = this.getRandomInt(0.45, 1.7, 1);
-        }, 5000);
-        window.setTimeout(() => {
-            this.newAnimationDuration = 0.6;
-        }, 1000)
-        window.setTimeout(() => {
-            this.newAnimationDuration = 0.8;
-        }, 1000)
-        window.setTimeout(() => {
-            this.newAnimationDuration = 1;
-        }, 1000)
-        window.setTimeout(() => {
-            this.newAnimationDuration = 1.3;
-        }, 1000)
-        window.setTimeout(() => {
-            this.newAnimationDuration = 1.6;
-        }, 1000)
+        // window.setInterval(() => {
+        //     this.newAnimationDuration = this.getRandomInt(0.45, 1.7, 1);
+        // }, 5000);
+        // window.setTimeout(() => {
+        //     this.newAnimationDuration = 0.6;
+        // }, 1000)
+        // window.setTimeout(() => {
+        //     this.newAnimationDuration = 0.8;
+        // }, 1000)
+        // window.setTimeout(() => {
+        //     this.newAnimationDuration = 1;
+        // }, 1000)
+        // window.setTimeout(() => {
+        //     this.newAnimationDuration = 1.3;
+        // }, 1000)
+        // window.setTimeout(() => {
+        //     this.newAnimationDuration = 1.6;
+        // }, 1000)
 
         
         
     }
 
     ngAfterViewInit() {
-        console.log (this.sparkline)
+        //console.log (this.sparkline)
     }
 
     getRandomInt(min: number, max: number, decimalPlaces: number): number {  

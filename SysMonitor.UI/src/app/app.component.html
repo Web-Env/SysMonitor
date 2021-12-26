@@ -1,10 +1,11 @@
 <div style="height: auto;">
-    <p>{{ report }}</p>
+    <!-- <p>{{ report }}</p> -->
 
     <div class="fan-container">
-        <app-fan></app-fan>
+        <!-- <app-fan></app-fan> -->
+        <app-fans-container *ngIf="fans != undefined" [fans]="fans"></app-fans-container>
 
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="1116 -716 3192 1992" style="enable-background:new 1116 -716 3192 1992;" xml:space="preserve">
+        <!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="1116 -716 3192 1992" style="enable-background:new 1116 -716 3192 1992;" xml:space="preserve">
             <g id="Layer_1">
                 <g>
                     <path d="M2145.8,1264.4l-14.8-7.4l-7.5-15l-7.5-15v-56.4v-56.4l-13.2-0.6c-7.3-0.3-63.1-1-124-1.5l-110.7-1l-11-7.3l-11-7.3
@@ -532,8 +533,6 @@
                     </g>
                 </g>
             </g>
-        </svg>
-
-        <app-sparkline></app-sparkline>
+        </svg> -->
     </div>
 </div>
