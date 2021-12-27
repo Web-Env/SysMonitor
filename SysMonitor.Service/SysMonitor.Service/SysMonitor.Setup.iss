@@ -36,7 +36,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Development\SysMonitor\SysMonitor.Service\SysMonitor.Service\bin\Release\*"; DestDir: "{app}/Service"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Development\SysMonitor\SysMonitor.UI\dist\SysMonitor-win32-x64\*"; DestDir: "{app}/Application"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Development\SysMonitor\SysMonitor.UI\SysMonitor-win32-x64\*"; DestDir: "{app}/Application"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
