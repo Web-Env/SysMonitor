@@ -16,11 +16,13 @@
                 transform-box: fill-box;
                 transform-origin: center;
             
-                -webkit-animation: rotating infinite linear forwards;
-                -moz-animation: rotating infinite linear forwards;
-                -ms-animation: rotating infinite linear forwards;
-                -o-animation: rotating infinite linear forwards;
-                animation: rotating  linear infinite forwards;
+                &.animated {
+                    -webkit-animation: rotating infinite linear forwards;
+                    -moz-animation: rotating infinite linear forwards;
+                    -ms-animation: rotating infinite linear forwards;
+                    -o-animation: rotating infinite linear forwards;
+                    animation: rotating infinite linear forwards;
+                }
             }
         }
     }
@@ -47,9 +49,9 @@
 }
 
 @-webkit-keyframes rotating {
-    // 0% {
-    //     transform: rotate(0deg);
-    // }
+    0% {
+        transform: rotate(0deg);
+    }
 
     100% {
         transform: rotate(360deg);
@@ -57,9 +59,9 @@
 }
 
 @keyframes rotating {
-    // 0% {
-    //     transform: rotate(0deg);
-    // }
+    0% {
+        transform: rotate(0deg);
+    }
 
     100% {
         transform: rotate(360deg);

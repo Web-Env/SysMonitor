@@ -10,9 +10,9 @@ import { FansContainerComponent } from './fans-container/fans-container.componen
 @NgModule({
     declarations: [
         AppComponent,
-        SparklineComponent,
         FanComponent,
-        FansContainerComponent
+        FansContainerComponent,
+        SparklineComponent
     ],
     imports: [
         AppRoutingModule,
