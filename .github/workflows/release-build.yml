@@ -1,11 +1,8 @@
-name: PR - Build & Test
+name: Release - Build, Test & Pack
 
 on:
-  pull_request:
-    branches: [ main ]
-
-env:
-  RUN_NUMBER: ${{ github.run_number }}
+  release:
+    types: [ published ]
 
 jobs:
   build-pack:
@@ -31,13 +28,6 @@ jobs:
       uses: Saionaro/extract-package-version@v1.1.1
       with:
           path: './SysMonitor.UI'
-
-    - name: Configure Version
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: './SysMonitor.UI/package.json'
-      env:
-        version: ${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
 
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -87,12 +77,12 @@ jobs:
         working-directory: SysMonitor.Service
 
     - name: Rename Installer (Installer)
-      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}.exe
+      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}.exe
       working-directory: SysMonitor.Service
 
     - name: Archive Installer
       uses: actions/upload-artifact@v2
       with:
-        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
+        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}
         path: SysMonitor.Service/Output/
-        retention-days: 1
+        retention-days: 30

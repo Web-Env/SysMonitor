@@ -339,4 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-/SysMonitor.Service/SysMonitor.Service/Output/
+/SysMonitor.Service/Output/

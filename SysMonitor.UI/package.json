@@ -6,13 +6,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href ./",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "start:electron": "ng build --base-href ./ && electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "electron-package": "ng build --base-href ./ && electron-packager . SysMonitor --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
+    "electron-build-package": "ng build --base-href ./ && electron-packager . SysMonitor --no-prune --platform=win32 --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite",
+    "electron-package": "electron-packager . SysMonitor --no-prune --platform=win32 --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
   },
   "author": "Adam Barry-O'Donovan",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "@types/jquery": "^3.5.11",
     "electron": "^16.0.3",
     "electron-packager": "^15.4.0",
+    "puppeteer": "^13.0.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

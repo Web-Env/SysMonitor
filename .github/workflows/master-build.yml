@@ -4,10 +4,13 @@ on:
   push:
     branches: [ main ]
 
+env:
+  RUN_NUMBER: ${{ github.run_number }}
+
 jobs:
-  build-web:
-    name: Build Web
-    runs-on: ubuntu-latest
+  build-pack:
+    name: Build & Pack
+    runs-on: windows-latest
     strategy:
       matrix:
         node-version: [16.x]
@@ -22,17 +25,17 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-          
-    - name: Extract version
+
+    - name: Extract Version
       id: extract_version
       uses: Saionaro/extract-package-version@v1.1.1
       with:
-          path: './shufl-web'
-          
+          path: './SysMonitor.UI'
+
     - name: Configure Version
       uses: microsoft/variable-substitution@v1
       with:
-        files: './shufl-web/package.json'
+        files: './SysMonitor.UI/package.json'
       env:
         version: ${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
 
@@ -41,53 +44,55 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install modules and Build for Production
+    - name: Install modules and Build for Production (Web)
       run: |
         npm i
         npm run build
+      working-directory: SysMonitor.UI
 
-    - name: Run Tests
+    - name: Run Tests (Web)
       run: npm run test
+      working-directory: SysMonitor.UI
 
-    - name: Package Electron App
+    - name: Package Electron App (Web)
       run: npm run electron-package
+      working-directory: SysMonitor.UI
 
-  build-service:
-    name: Build Service
-    runs-on: ubuntu-latest
+    - name: Setup MSBuild (Service)
+      uses: microsoft/setup-msbuild@v1
 
-    steps:
-    - uses: actions/checkout@v2
+    - name: Setup Nuget (Service)
+      uses: Nuget/setup-nuget@v1.0.5
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+    - name: Clean (Service)
+      run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
+      working-directory: SysMonitor.Service
 
-    - name: Clean
-      run: dotnet clean ./SysMonitor.Service/SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
+    - name: Restore dependencies (Service)
+      run: nuget restore SysMonitor.Service.sln
+      working-directory: SysMonitor.Service
 
-    - name: Restore dependencies
-      run: dotnet restore --disable-parallel
-    
-    - name: Build
-      run: dotnet build --no-restore
-    
-    - name: Test
+    - name: Build (Service)
+      run: msbuild.exe SysMonitor.Service.sln /p:configuration="Release"
+      working-directory: SysMonitor.Service
+
+    - name: Test (Service)
       run: dotnet test --no-build --verbosity normal
+      working-directory: SysMonitor.Service
 
-  package-installer:
-    name: Package Installer
-    steps:
-    - name: Package Installer
+    - name: Package Installer (Installer)
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
-        script-name: ./SysMonitor.Service/SysMonitor.Service/SysMonitor.Setup.iss
-        working-directory: ${{ working-directory }}
-    
+        script-name: SysMonitor.Setup.iss
+        working-directory: SysMonitor.Service
+
+    - name: Rename Installer (Installer)
+      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}.exe
+      working-directory: SysMonitor.Service
+
     - name: Archive Installer
       uses: actions/upload-artifact@v2
       with:
-        name: Installer
-        path: ./SysMonitor.Service/SysMonitor.Service/Output/
-        retention-days: 5
+        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
+        path: SysMonitor.Service/Output/
+        retention-days: 15
