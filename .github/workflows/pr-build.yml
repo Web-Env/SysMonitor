@@ -5,12 +5,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build-web:
-    name: Build Web
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: SysMonitor.UI
+  build-pack:
+    name: Build & Pack
+    runs-on: windows-latest
+    # defaults:
+    #   run:
+    #     working-directory: SysMonitor.UI
     strategy:
       matrix:
         node-version: [16.x]
@@ -25,6 +25,10 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+
+    - name: Set Working Directory (Web)
+      run: |
+        cd SysMonitor.UI
           
     - name: Extract version
       id: extract_version
@@ -55,15 +59,19 @@ jobs:
     - name: Package Electron App
       run: npm run electron-package
 
-  build-service:
-    name: Build Service
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: SysMonitor.Service
+  # build-service:
+  #   name: Build Service
+  #   runs-on: windows-latest
+  #   defaults:
+  #     run:
+  #       working-directory: SysMonitor.Service
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+    - name: Set Working Directory (Service)
+      run: |
+        cd ../SysMonitor.Service
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
@@ -83,14 +91,15 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-  package-installer:
-    name: Package Installer
-    runs-on: windows-latest
+  #package-installer:
+    #name: Package Installer
+    #runs-on: windows-latest
     # defaults:
     #   run:
     #     working-directory: SysMonitor.Service
     #needs: [build-web, build-service]
-    steps:
+    #steps:
+
     - name: LS
       run: |
         dir SysMonitor.Service
