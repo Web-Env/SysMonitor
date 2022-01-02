@@ -86,9 +86,9 @@ jobs:
   package-installer:
     name: Package Installer
     runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: SysMonitor.Service
+    # defaults:
+    #   run:
+    #     working-directory: SysMonitor.Service
     #needs: [build-web, build-service]
     steps:
     - name: LS
