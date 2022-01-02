@@ -45,9 +45,13 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\Application\{#MyAppExeName}
 
 [Run]
 Filename: {sys}\sc.exe; Parameters: "create SysMonitor start= auto binPath= ""{app}\Service\SysMonitor.Service.exe""" ; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "start SysMonitor" ; Flags: runhidden
 Filename: "{app}\Application\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 Filename: {sys}\sc.exe; Parameters: "stop SysMonitor" ; Flags: runhidden
 Filename: {sys}\sc.exe; Parameters: "delete SysMonitor" ; Flags: runhidden
+
+[UninstallDelete]
+Type: files; Name: "{win}\MYPROG.INI"
 
