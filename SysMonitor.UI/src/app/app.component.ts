@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
         });
 
         this.ipc.on('app-version', (event, data) => {
-            if (data != null && data != '') {
+            if (data !== null && data !== '') {
                 this.appVersion = data;
             }
         });
