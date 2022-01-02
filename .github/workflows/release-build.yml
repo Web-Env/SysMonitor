@@ -1,8 +1,8 @@
-name: Master - Build, Test & Pack
+name: Release - Build, Test & Pack
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [ published ]
 
 jobs:
   build-web:
@@ -28,13 +28,6 @@ jobs:
       uses: Saionaro/extract-package-version@v1.1.1
       with:
           path: './SysMonitor.UI'
-          
-    - name: Configure Version
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: './SysMonitor.UI/package.json'
-      env:
-        version: ${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
 
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -84,7 +77,7 @@ jobs:
       with:
         script-name: ./SysMonitor.Service/SysMonitor.Service/SysMonitor.Setup.iss
         working-directory: ${{ working-directory }}
-        installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
+        installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}
     
     - name: Archive Installer
       uses: actions/upload-artifact@v2
