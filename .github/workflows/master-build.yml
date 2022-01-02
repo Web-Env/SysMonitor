@@ -1,7 +1,7 @@
-name: PR - Build & Test
+name: Master - Build, Test & Pack
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Cache node modules
       uses: actions/cache@v1
       with:
@@ -27,28 +27,28 @@ jobs:
       id: extract_version
       uses: Saionaro/extract-package-version@v1.1.1
       with:
-          path: './SysMonitor.UI'
+          path: './shufl-web'
           
     - name: Configure Version
       uses: microsoft/variable-substitution@v1
       with:
-        files: './SysMonitor.UI/package.json'
+        files: './shufl-web/package.json'
       env:
         version: ${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
-    
+
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
+
     - name: Install modules and Build for Production
       run: |
         npm i
         npm run build
-    
+
     - name: Run Tests
       run: npm run test
-    
+
     - name: Package Electron App
       run: npm run electron-package
 
@@ -58,15 +58,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    
+
     - name: Clean
       run: dotnet clean ./SysMonitor.Service/SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
-    
+
     - name: Restore dependencies
       run: dotnet restore --disable-parallel
     
@@ -84,7 +84,6 @@ jobs:
       with:
         script-name: ./SysMonitor.Service/SysMonitor.Service/SysMonitor.Setup.iss
         working-directory: ${{ working-directory }}
-        installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
     
     - name: Archive Installer
       uses: actions/upload-artifact@v2
