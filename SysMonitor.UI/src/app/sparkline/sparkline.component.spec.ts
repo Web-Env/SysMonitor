@@ -23,23 +23,25 @@ describe('SparklineComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should not add NaN points to the points array', () => {
+    it('#addNewPoint should not add NaN points to the points array', () => {
         component.addNewPoint(NaN);
 
         expect(component.points.length).toEqual(0);
     });
     
-    it('should add points to the points array', () => {
+    it('#addNewPoint should add points to the points array', () => {
         component.addNewPoint(50);
 
         expect(component.points.length).toEqual(1);
         expect(component.points[0]).toEqual(1.875);
     });
     
-    it('should generate pointsString when adding points to the points array', () => {
-        component.addNewPoint(50);
+    it('#generateNewPointsString should generate pointsString when adding points to the points array', () => {
+        component.points = [50];
 
-        expect(component.pointsString).toEqual('0, 1.875 ');
+        (component as any).generateNewPointsString();
+
+        expect(component.pointsString).toEqual('0, 50 ');
     });
 
 });

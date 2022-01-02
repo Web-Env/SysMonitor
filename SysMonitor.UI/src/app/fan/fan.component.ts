@@ -32,7 +32,7 @@ export class FanComponent implements AfterViewInit, OnInit {
         // Need to use jQuery for this part. For some reason, despite the method apparently not doing anything, the show method call after
         // the 'animated' class is removed to make the tranisition between animation-durations smooth. Attempting to replicate the logic
         // in vanilla js from the jQuery source code does not work for some reason
-        var el = $(`#${this.fanId}`);document.getElementById(this.fanId);
+        var el = $(`#${this.fanId}`);
 
         el.on('animationiteration', (e: JQuery.Event) => {
             if (this.newAnimationDuration != 0 && this.newAnimationDuration != this.animationDuration) {
@@ -79,10 +79,10 @@ export class FanComponent implements AfterViewInit, OnInit {
     }
 
     private calculateRpmAnimationDuration(fanSpeed: number): number {
-        let rps = (fanSpeed / 60)
+        let rps = (fanSpeed / 60);
         let timeForSingleRotation = 1 / rps;
         let animationDuration = parseFloat((timeForSingleRotation * 20).toFixed(3));
 
-        return animationDuration
+        return animationDuration;
     }
 }
