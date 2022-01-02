@@ -94,11 +94,12 @@ jobs:
     - name: LS
       run: |
         dir
-      shell: bash
+      shell: cmd
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
         script-name: SysMonitor.Setup.iss
+        working-directory: SysMonitor.Service
         #installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
     
     - name: Archive Installer
