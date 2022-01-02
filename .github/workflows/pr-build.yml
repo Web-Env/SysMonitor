@@ -57,7 +57,7 @@ jobs:
 
   build-service:
     name: Build Service
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     defaults:
       run:
         working-directory: SysMonitor.Service
