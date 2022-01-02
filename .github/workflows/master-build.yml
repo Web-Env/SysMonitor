@@ -75,7 +75,7 @@ jobs:
       run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
 
     - name: Restore dependencies
-      run: nuget restore SysMonitor.Service.sln --disable-parallel
+      run: nuget restore SysMonitor.Service.sln
     
     - name: Build
       run: dotnet build --no-restore
