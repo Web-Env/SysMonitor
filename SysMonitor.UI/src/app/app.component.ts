@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
         this.ipc.on('report', (event, data) => {
             let jsonData = JSON.parse(data);
 
-            var fanData = jsonData.map((fan: any) => { return fan['Rpm'] });
+            var fanData = jsonData.map((fan: any) => { return fan['Rpm']; });
 
             if (this.fans === undefined) {
                 this.fans = fanData;
