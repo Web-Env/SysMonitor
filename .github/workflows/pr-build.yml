@@ -25,10 +25,6 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-
-    - name: Set Working Directory (Web)
-      run: |
-        cd SysMonitor.UI
           
     - name: Extract version
       id: extract_version
@@ -52,12 +48,18 @@ jobs:
       run: |
         npm i
         npm run build
+      with:
+        working-directory: SysMonitor.UI
     
     - name: Run Tests
       run: npm run test
+      with:
+        working-directory: SysMonitor.UI
     
     - name: Package Electron App
       run: npm run electron-package
+      with:
+        working-directory: SysMonitor.UI
 
   # build-service:
   #   name: Build Service
@@ -68,10 +70,6 @@ jobs:
 
   #   steps:
   #   - uses: actions/checkout@v2
-
-    - name: Set Working Directory (Service)
-      run: |
-        cd ../SysMonitor.Service
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
@@ -81,15 +79,23 @@ jobs:
     
     - name: Clean
       run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
+      with:
+        working-directory: SysMonitor.Service
     
     - name: Restore dependencies
       run: nuget restore SysMonitor.Service.sln
+      with:
+        working-directory: SysMonitor.Service
     
     - name: Build
       run: msbuild.exe SysMonitor.Service.sln /p:configuration="Release"
+      with:
+        working-directory: SysMonitor.Service
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      with:
+        working-directory: SysMonitor.Service
 
   #package-installer:
     #name: Package Installer
@@ -115,5 +121,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Installer
-        path: Output/
+        path: SysMonitor.Service/Output/
         retention-days: 5
