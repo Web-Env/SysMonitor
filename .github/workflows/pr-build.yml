@@ -93,7 +93,7 @@ jobs:
     steps:
     - name: LS
       run: |
-        dir ..
+        dir ../..
       shell: cmd
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
