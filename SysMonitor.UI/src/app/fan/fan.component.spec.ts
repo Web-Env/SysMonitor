@@ -50,7 +50,7 @@ describe('FanComponent', () => {
         
         var fanElement = fixture.debugElement.nativeElement.querySelector('#fan-0');
         var fanElementAnimationDuration = fanElement.style.animationDuration;
-        var sparkline = (component as any).sparkline
+        var sparkline = (component as any).sparkline;
 
         expect(component.rpm).toEqual(500);
         expect(component.animationDurationStyle).toEqual('2.4s');
