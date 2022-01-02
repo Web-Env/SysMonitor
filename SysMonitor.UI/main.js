@@ -1,13 +1,13 @@
-const electron = require("electron");
-const { ipcMain, dialog, globalShortcut, systemPreferences } = require("electron");
-const url = require("url");
-const path = require("path");
-const net = require("net");
+const electron = require('electron');
+const { ipcMain, dialog, globalShortcut, systemPreferences } = require('electron');
+const url = require('url');
+const path = require('path');
+const net = require('net');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
-app.on("ready", () => {
+app.on('ready', () => {
     window = new BrowserWindow({ 
         width: 2000, 
         height: 1200,
@@ -20,7 +20,7 @@ app.on("ready", () => {
     window.loadURL(
         url.format({
             pathname: path.join(__dirname, `/dist/index.html`),
-            protocol: "file:",
+            protocol: 'file:',
             slashes: true
         })
     );
@@ -36,7 +36,7 @@ app.on("ready", () => {
             client.on('data', (data) => {
                 //console.log(data.toString());
 
-                window.webContents.send("report", data.toString());
+                window.webContents.send('report', data.toString());
             });
             
             client.on('end', function() {

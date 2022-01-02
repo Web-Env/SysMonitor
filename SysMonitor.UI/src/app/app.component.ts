@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer } from 'electron';
-import { FansContainerComponent } from "./fans-container/fans-container.component";
+import { FansContainerComponent } from './fans-container/fans-container.component';
 
 @Component({
     selector: 'app-root',
@@ -22,10 +22,10 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.ipc = window.require('electron').ipcRenderer;
 
-        this.ipc.on("report", (event, data) => {
+        this.ipc.on('report', (event, data) => {
             let jsonData = JSON.parse(data);
 
-            var fanData = jsonData.map((fan: any) => { return fan["Rpm"] });
+            var fanData = jsonData.map((fan: any) => { return fan['Rpm'] });
 
             if (this.fans === undefined) {
                 this.fans = fanData;

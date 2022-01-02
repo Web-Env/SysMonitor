@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FanComponent } from "../fan/fan.component";
+import { FanComponent } from '../fan/fan.component';
 
 @Component({
     selector: 'app-fans-container',
