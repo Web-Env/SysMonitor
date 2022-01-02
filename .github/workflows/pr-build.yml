@@ -71,7 +71,7 @@ jobs:
         dotnet-version: 5.0.x
     
     - name: Clean
-      run: dotnet clean ./SysMonitor.Service/SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
+      run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
     
     - name: Restore dependencies
       run: dotnet restore --disable-parallel
@@ -81,21 +81,3 @@ jobs:
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
-
-  package-installer:
-    name: Package Installer
-    runs-on: ubuntu-latest
-    steps:
-    - name: Package Installer
-      uses: team-mst/mst-inno-setup-wrapper@v1
-      with:
-        script-name: ./SysMonitor.Service/SysMonitor.Service/SysMonitor.Setup.iss
-        working-directory: ./
-        installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
-    
-    - name: Archive Installer
-      uses: actions/upload-artifact@v2
-      with:
-        name: Installer
-        path: ./SysMonitor.Service/SysMonitor.Service/Output/
-        retention-days: 5
