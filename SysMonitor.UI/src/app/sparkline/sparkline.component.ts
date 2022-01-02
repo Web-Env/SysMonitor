@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-sparkline',
@@ -14,12 +14,12 @@ export class SparklineComponent implements OnInit {
     maxPointsLength: number = 60;
     xAxisIndexStep: number = 150 / this.maxPointsLength;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) { }
+    constructor() { }
 
     ngOnInit(): void { }
 
     public addNewPoint(point: number): void {
-        if (point != undefined && !Number.isNaN(point)) {
+        if (point !== undefined && !Number.isNaN(point)) {
             if (this.points.length >= this.maxPointsLength) {
                 this.points.shift();
             }
@@ -45,6 +45,5 @@ export class SparklineComponent implements OnInit {
         });
 
         this.pointsString = newPointsString;
-        this.changeDetectorRef.detectChanges()
     }
 }

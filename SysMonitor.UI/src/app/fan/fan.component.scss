@@ -1,5 +1,3 @@
-
-
 .fan-container {
     width: 35%;
     height: auto;
@@ -11,11 +9,11 @@
         .fan-image {
             width: 135px;
             height: 135px;
-    
+
             .fan {
                 transform-box: fill-box;
                 transform-origin: center;
-            
+
                 &.animated {
                     -webkit-animation: rotating infinite linear forwards;
                     -moz-animation: rotating infinite linear forwards;

@@ -21,11 +21,10 @@ export class FansContainerComponent implements AfterViewInit, OnInit {
     }
 
     public updateFanSpeeds(fanSpeeds: Array<number>) {
-        //this.fans = fanSpeeds;
-
         this.fanComponents.toArray().forEach((fanComponent, index) => {
             fanComponent.updateFanSpeed(fanSpeeds[index]);
         });
+        
         this.changeDetectorRef.detectChanges();
     }
 }
