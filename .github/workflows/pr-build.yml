@@ -48,18 +48,15 @@ jobs:
       run: |
         npm i
         npm run build
-      with:
-        working-directory: SysMonitor.UI
+      working-directory: SysMonitor.UI
     
     - name: Run Tests
       run: npm run test
-      with:
-        working-directory: SysMonitor.UI
+      working-directory: SysMonitor.UI
     
     - name: Package Electron App
       run: npm run electron-package
-      with:
-        working-directory: SysMonitor.UI
+      working-directory: SysMonitor.UI
 
   # build-service:
   #   name: Build Service
@@ -79,23 +76,19 @@ jobs:
     
     - name: Clean
       run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
-      with:
-        working-directory: SysMonitor.Service
+      working-directory: SysMonitor.Service
     
     - name: Restore dependencies
       run: nuget restore SysMonitor.Service.sln
-      with:
-        working-directory: SysMonitor.Service
+      working-directory: SysMonitor.Service
     
     - name: Build
       run: msbuild.exe SysMonitor.Service.sln /p:configuration="Release"
-      with:
-        working-directory: SysMonitor.Service
+      working-directory: SysMonitor.Service
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      with:
-        working-directory: SysMonitor.Service
+      working-directory: SysMonitor.Service
 
   #package-installer:
     #name: Package Installer
