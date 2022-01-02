@@ -10,6 +10,8 @@ import { FansContainerComponent } from './fans-container/fans-container.componen
 export class AppComponent implements OnInit {
     title = 'SysMonitor';
 
+    appVersion!: string;
+
     fans!: Array<number>;
 
     @ViewChild(FansContainerComponent)
@@ -35,5 +37,13 @@ export class AppComponent implements OnInit {
                 this.fansContainer.updateFanSpeeds(fanData);
             }
         });
+
+        this.ipc.on('app-version', (event, data) => {
+            if (data != null && data != '') {
+                this.appVersion = data;
+            }
+        });
+
+        this.ipc.send('app-version');
     }
 }

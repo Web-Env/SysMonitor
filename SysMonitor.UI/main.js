@@ -4,6 +4,7 @@ const url = require('url');
 const path = require('path');
 const net = require('net');
 
+const version = require('./package.json').version;
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
@@ -26,6 +27,10 @@ app.on('ready', () => {
     );
 
     window.webContents.openDevTools();
+
+    ipcMain.on('app-version', (event, args) => {
+        window.webContents.send('app-version', version);
+    });
 
     const PIPE_PATH = '//./pipe/SysMonitor';
 
