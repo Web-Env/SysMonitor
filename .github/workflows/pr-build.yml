@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  RUN_NUMBER: ${{ github.run_number }}
+
 jobs:
   build-pack:
     name: Build & Pack
@@ -34,7 +37,7 @@ jobs:
       with:
         files: './SysMonitor.UI/package.json'
       env:
-        version: ${{ steps.extract_version.outputs.version }}-PR-${{ env.GITHUB_RUN_NUMBER }}
+        version: ${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
 
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -84,12 +87,12 @@ jobs:
         working-directory: SysMonitor.Service
 
     - name: Rename Installer (Installer)
-      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.GITHUB_RUN_NUMBER }}.exe
+      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}.exe
       working-directory: SysMonitor.Service
 
     - name: Archive Installer
       uses: actions/upload-artifact@v2
       with:
-        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.GITHUB_RUN_NUMBER }}
+        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
         path: SysMonitor.Service/Output/
         retention-days: 5
