@@ -87,8 +87,7 @@ jobs:
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
-        script-name: SysMonitor.Service/SysMonitor.Setup.iss
-        working-directory: ${{ working-directory }}
+        script-name: SysMonitor.Setup.iss
         #installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}
     
     - name: Archive Installer
