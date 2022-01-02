@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-sparkline',
@@ -6,8 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./sparkline.component.scss']
 })
 export class SparklineComponent implements OnInit {
+    @Input() id!: string;
 
-    pointsString: string = "";
+    pointsString: string = '';
     points: Array<number> = [];
     maxPoint: number = 2000;
     maxPointsLength: number = 60;
@@ -15,43 +16,34 @@ export class SparklineComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit(): void {
-        // window.setInterval(() => {
-        //     this.addNewPoint(this.getRandomInt(300, 1600, 1));
-        // }, 1000);
-    }
+    ngOnInit(): void { }
 
     public addNewPoint(point: number): void {
-        if (this.points.length >= this.maxPointsLength) {
-            this.points.shift();
-        }
+        if (point !== undefined && !Number.isNaN(point)) {
+            if (this.points.length >= this.maxPointsLength) {
+                this.points.shift();
+            }
+    
+            if (this.maxPoint === undefined || this.maxPoint < point) {
+                this.maxPoint = point;
+            }
+            
+            let scaledPoint = 75 * (point / this.maxPoint);
 
-        if (this.maxPoint === undefined || this.maxPoint < point) {
-            this.maxPoint = point;
+            this.points.push(scaledPoint);
+            this.generateNewPointsString();
         }
-        
-        this.points.push(point);
-        this.generateNewPointsString();
     }
 
     private generateNewPointsString(): void {
-        var xAxisIndex = 0;
-        var newPointsString = "";
+        let xAxisIndex = 0;
+        let newPointsString = '';
 
         this.points.forEach((point) => {
-            var scaledPoint = (point / this.maxPoint) * 75;
-
-            newPointsString += `${xAxisIndex}, ${scaledPoint} `;
+            newPointsString += `${xAxisIndex}, ${point} `;
             xAxisIndex += this.xAxisIndexStep;
         });
 
         this.pointsString = newPointsString;
-    }
-
-    getRandomInt(min: number, max: number, decimalPlaces: number): number {  
-        var rand = Math.random() < 0.5 ? ((1-Math.random()) * (max-min) + min) : (Math.random() * (max-min) + min);  // could be min or max or anything in between
-        var power = Math.pow(10, decimalPlaces);
-        var randInt = Math.floor(rand*power) / power;
-        return randInt;
     }
 }

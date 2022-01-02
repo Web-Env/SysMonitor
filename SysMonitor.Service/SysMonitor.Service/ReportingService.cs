@@ -39,7 +39,6 @@ namespace SysMonitor.Service
                     using (var pipe = new NamedPipeServerStream("SysMonitor", PipeDirection.InOut, 10, PipeTransmissionMode.Message, PipeOptions.None, 0, 0, pipeSecurity: pipeSecurity))
                     {
                         pipe.WaitForConnection();
-                        StreamWriter sw = new StreamWriter(pipe);
 
                         var mappersConfig = new MapperConfiguration(cfg =>
                         {
@@ -79,7 +78,10 @@ namespace SysMonitor.Service
             public void VisitHardware(IHardware hardware)
             {
                 hardware.Update();
-                foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
+                foreach (IHardware subHardware in hardware.SubHardware)
+                {
+                    subHardware.Accept(this);
+                }
             }
             public void VisitSensor(ISensor sensor) { }
             public void VisitParameter(IParameter parameter) { }

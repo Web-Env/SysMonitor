@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FanComponent } from "../fan/fan.component";
+import { FanComponent } from '../fan/fan.component';
 
 @Component({
     selector: 'app-fans-container',
@@ -21,11 +21,10 @@ export class FansContainerComponent implements AfterViewInit, OnInit {
     }
 
     public updateFanSpeeds(fanSpeeds: Array<number>) {
-        //this.fans = fanSpeeds;
-
         this.fanComponents.toArray().forEach((fanComponent, index) => {
             fanComponent.updateFanSpeed(fanSpeeds[index]);
         });
+        
         this.changeDetectorRef.detectChanges();
     }
 }

@@ -56,7 +56,7 @@ namespace SysMonitor.Service.Helpers
         public static List<FanModel> Monitor(IMapper mapper)
         {
             var fans = new List<FanModel>();
-            Computer computer = new Computer()
+            Computer computer = new Computer
             {
                 IsCpuEnabled = true,
                 IsGpuEnabled = true,
@@ -71,12 +71,8 @@ namespace SysMonitor.Service.Helpers
 
             foreach (IHardware hardware in computer.Hardware)
             {
-                //.WriteLine("Hardware: {0}", hardware.Name);
-
                 foreach (IHardware subhardware in hardware.SubHardware)
                 {
-                    //Console.WriteLine("\tSubhardware: {0}", subhardware.Name);
-
                     foreach (ISensor sensor in subhardware.Sensors)
                     {
                         //Console.WriteLine("\t\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
@@ -88,16 +84,11 @@ namespace SysMonitor.Service.Helpers
                     var cpuFan = fanSensorModels?.FirstOrDefault();
 
                     if (cpuFan != null)
+                    {
                         cpuFan.FanType = FanType.Cpu;
+                    }
 
                     fans = fanSensorModels;
-
-                    //var fanSensorJson = JsonConvert.SerializeObject(fanSensorModels);
-                    //Console.WriteLine(fanSensorJson);
-                    //var trimmedJson = fanSensorJson.Remove(0, 1).Remove(fanSensorJson.Length - 2, 1);
-                    //trimmedJson = trimmedJson.Replace("{", "[");
-                    //trimmedJson = trimmedJson.Replace("}", "]");
-                    //_logger.LogInformation(trimmedJson, DateTimeOffset.Now);
                 }
 
                 foreach (ISensor sensor in hardware.Sensors)
