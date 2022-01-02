@@ -8,7 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "start:electron": "ng build --base-href ./ && electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
@@ -28,6 +28,7 @@
     "@types/jquery": "^3.5.11",
     "electron": "^16.0.3",
     "electron-packager": "^15.4.0",
+    "puppeteer": "^13.0.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

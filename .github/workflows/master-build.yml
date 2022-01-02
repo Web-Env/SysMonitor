@@ -85,7 +85,8 @@ jobs:
 
   package-installer:
     name: Package Installer
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    needs: [build-web, build-service]
     steps:
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
