@@ -71,7 +71,7 @@ jobs:
       run: nuget restore SysMonitor.Service.sln
     
     - name: Build
-      run: msbuild.exe build SysMonitor.Service.sln /p:configuration="Release"
+      run: msbuild.exe build SysMonitor.Service/SysMonitor.Service/SysMonitor.Service.csproj /p:configuration="Release"
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
