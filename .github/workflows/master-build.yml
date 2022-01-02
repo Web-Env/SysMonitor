@@ -78,6 +78,7 @@ jobs:
 
   package-installer:
     name: Package Installer
+    runs-on: ubuntu-latest
     steps:
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
