@@ -25,36 +25,30 @@ app.on("ready", () => {
         })
     );
 
-    window.webContents.openDevTools()
+    window.webContents.openDevTools();
 
-    const PIPE_NAME = 'SysMonitor';
     const PIPE_PATH = '//./pipe/SysMonitor';
-
-
 
     try {
         setInterval(() => {
-            var client = net.connect(PIPE_PATH, function() {
-                //console.log('Client: on connection');
-            })
+            var client = net.connect(PIPE_PATH);
             
             client.on('data', (data) => {
-                console.log(data.toString());
+                //console.log(data.toString());
 
                 window.webContents.send("report", data.toString());
-                //client.end('Thanks!');
             });
             
             client.on('end', function() {
-                console.log('Client: on end');
+                //console.log('Client: on end');
             });
     
             client.on('error', (e) => {
-                console.log (e)
-            })
+                console.error(e)
+            });
         }, 1000);
     }
     catch (e) {
-        console.log (e)
+        console.error(e);
     }
 });
