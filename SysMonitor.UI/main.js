@@ -44,7 +44,7 @@ app.on("ready", () => {
             });
     
             client.on('error', (e) => {
-                console.error(e)
+                console.error(e);
             });
         }, 1000);
     }

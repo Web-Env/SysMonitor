@@ -21,7 +21,9 @@ namespace SysMonitor.Service
             base.OnBeforeInstall(savedState);
 
             if (!EventLog.SourceExists("SysMonitor"))
+            {
                 EventLog.CreateEventSource("SysMonitor", "Application");
+            }
         }
 
         protected override void OnAfterUninstall(IDictionary savedState)
@@ -29,7 +31,9 @@ namespace SysMonitor.Service
             base.OnAfterInstall(savedState);
 
             if (EventLog.SourceExists("SysMonitor"))
+            {
                 EventLog.DeleteEventSource("SysMonitor");
+            }
         }
     }
 }
