@@ -68,11 +68,14 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
+    - name: Setup Nuget
+      uses: Nuget/setup-nuget@v1.0.5
+
     - name: Clean
       run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
 
     - name: Restore dependencies
-      run: dotnet nuget restore SysMonitor.Service.sln --disable-parallel
+      run: nuget restore SysMonitor.Service.sln --disable-parallel
     
     - name: Build
       run: dotnet build --no-restore
