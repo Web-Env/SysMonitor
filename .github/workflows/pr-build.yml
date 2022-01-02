@@ -94,6 +94,7 @@ jobs:
     - name: LS
       run: |
         echo dir
+      shell: bash
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
