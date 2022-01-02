@@ -2,7 +2,7 @@ name: Master - Build, Test & Pack
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build-web:
