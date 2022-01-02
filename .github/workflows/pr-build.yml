@@ -8,16 +8,13 @@ jobs:
   build-pack:
     name: Build & Pack
     runs-on: windows-latest
-    # defaults:
-    #   run:
-    #     working-directory: SysMonitor.UI
     strategy:
       matrix:
         node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Cache node modules
       uses: actions/cache@v1
       with:
@@ -25,94 +22,74 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-          
-    - name: Extract version
+
+    - name: Extract Version
       id: extract_version
       uses: Saionaro/extract-package-version@v1.1.1
       with:
           path: './SysMonitor.UI'
-          
+
     - name: Configure Version
       uses: microsoft/variable-substitution@v1
       with:
         files: './SysMonitor.UI/package.json'
       env:
-        version: ${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
-    
+        version: ${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
+
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
-    - name: Install modules and Build for Production
+
+    - name: Install modules and Build for Production (Web)
       run: |
         npm i
         npm run build
       working-directory: SysMonitor.UI
-    
-    - name: Run Tests
+
+    - name: Run Tests (Web)
       run: npm run test
       working-directory: SysMonitor.UI
-    
-    - name: Package Electron App
+
+    - name: Package Electron App (Web)
       run: npm run electron-package
       working-directory: SysMonitor.UI
 
-  # build-service:
-  #   name: Build Service
-  #   runs-on: windows-latest
-  #   defaults:
-  #     run:
-  #       working-directory: SysMonitor.Service
-
-  #   steps:
-  #   - uses: actions/checkout@v2
-    
-    - name: Setup MSBuild
+    - name: Setup MSBuild (Service)
       uses: microsoft/setup-msbuild@v1
 
-    - name: Setup Nuget
+    - name: Setup Nuget (Service)
       uses: Nuget/setup-nuget@v1.0.5
-    
-    - name: Clean
+
+    - name: Clean (Service)
       run: dotnet clean SysMonitor.Service.sln -- configuration Release && dotnet nuget locals all --clear
       working-directory: SysMonitor.Service
-    
-    - name: Restore dependencies
+
+    - name: Restore dependencies (Service)
       run: nuget restore SysMonitor.Service.sln
       working-directory: SysMonitor.Service
-    
-    - name: Build
+
+    - name: Build (Service)
       run: msbuild.exe SysMonitor.Service.sln /p:configuration="Release"
       working-directory: SysMonitor.Service
-    
-    - name: Test
+
+    - name: Test (Service)
       run: dotnet test --no-build --verbosity normal
       working-directory: SysMonitor.Service
 
-  #package-installer:
-    #name: Package Installer
-    #runs-on: windows-latest
-    # defaults:
-    #   run:
-    #     working-directory: SysMonitor.Service
-    #needs: [build-web, build-service]
-    #steps:
-
-    - name: LS
-      run: |
-        dir SysMonitor.Service
-      shell: cmd
-    - name: Package Installer
+    - name: Package Installer (Installer)
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
         script-name: SysMonitor.Setup.iss
         working-directory: SysMonitor.Service
-        #installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-CI-${{ env.RUN_NUMBER }}
-    
+
+    - name: Rename Installer (Installer)
+      run: ren Output/SysMonitor.Setup.exe SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}.exe
+      working-directory: SysMonitor.Service
+
     - name: Archive Installer
       uses: actions/upload-artifact@v2
       with:
-        name: Installer
+        name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
         path: SysMonitor.Service/Output/
         retention-days: 5
