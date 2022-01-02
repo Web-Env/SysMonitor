@@ -12,7 +12,7 @@
     "start:electron": "ng build --base-href ./ && electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "electron-package": "ng build --base-href ./ && electron-packager . SysMonitor --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
+    "electron-package": "ng build --base-href ./ && electron-packager . SysMonitor --no-prune --platform=win32 --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
   },
   "author": "Adam Barry-O'Donovan",
   "license": "ISC",

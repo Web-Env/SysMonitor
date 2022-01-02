@@ -89,8 +89,10 @@ jobs:
     defaults:
       run:
         working-directory: SysMonitor.Service
-    needs: [build-web, build-service]
+    #needs: [build-web, build-service]
     steps:
+    - name: LS
+      run: "echo ls -la"
     - name: Package Installer
       uses: team-mst/mst-inno-setup-wrapper@v1
       with:
