@@ -89,11 +89,11 @@ jobs:
       with:
         script-name: SysMonitor.Setup.iss
         working-directory: SysMonitor.Service
-        installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}
+        #installer-file-name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}
     
     - name: Archive Installer
       uses: actions/upload-artifact@v2
       with:
         name: Installer
-        path: SysMonitor.Service/Output/
+        path: Output/
         retention-days: 5

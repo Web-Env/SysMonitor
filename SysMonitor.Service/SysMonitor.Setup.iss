@@ -35,8 +35,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Development\SysMonitor\SysMonitor.Service\SysMonitor.Service\bin\Release\*"; DestDir: "{app}/Service"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Development\SysMonitor\SysMonitor.UI\SysMonitor-win32-x64\*"; DestDir: "{app}/Application"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "SysMonitor.Service\bin\Release\*"; DestDir: "{app}/Service"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\SysMonitor.UI\SysMonitor-win32-x64\*"; DestDir: "{app}/Application"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
