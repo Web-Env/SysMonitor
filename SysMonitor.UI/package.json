@@ -12,7 +12,6 @@
     "start:electron": "ng build --base-href ./ && electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "package:win": "ng build --base-href ./ && cross-var electron-packager dist $npm_package_name-$npm_package_version --out=packages --platform=win32 --arch=all --overwrite ",
     "electron-package": "ng build --base-href ./ && electron-packager . SysMonitor --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
   },
   "author": "Adam Barry-O'Donovan",
