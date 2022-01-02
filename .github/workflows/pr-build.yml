@@ -95,4 +95,4 @@ jobs:
       with:
         name: SysMonitor.Setup.${{ steps.extract_version.outputs.version }}-PR-${{ env.RUN_NUMBER }}
         path: SysMonitor.Service/Output/
-        retention-days: 5
+        retention-days: 1
