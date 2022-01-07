@@ -3,6 +3,7 @@ using LibreHardwareMonitor.Hardware;
 using Newtonsoft.Json;
 using SysMonitor.Service.Helpers;
 using SysMonitor.Service.Mappers;
+using SysMonitor.Service.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -19,12 +20,18 @@ namespace SysMonitor.Service
     {
         private readonly EventLog _eventLog;
 
+        private readonly HardwareReportModel _hardwareReportModel;
+
         public ReportingService()
         {
             InitializeComponent();
 
-            _eventLog = new EventLog("Application");
-            _eventLog.Source = "SysMonitor";
+            _eventLog = new EventLog("Application")
+            {
+                Source = "SysMonitor"
+            };
+
+            _hardwareReportModel = HardwareHelper.GenerateHardwareReport();
         }
 
         protected override void OnStart(string[] args)

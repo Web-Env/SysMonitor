@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\MappersConfig.cs" />
+    <Compile Include="HardwareReport.cs" />
     <Compile Include="Helpers\HardwareHelper.cs" />
     <Compile Include="Mappers\HardwareClassToModelProfile.cs" />
     <Compile Include="Models\CpuModel.cs" />
