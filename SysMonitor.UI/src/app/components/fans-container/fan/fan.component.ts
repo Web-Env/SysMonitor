@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
+import { fan } from "src/app/models/fan.model";
 import { SparklineComponent } from '../../sparkline/sparkline.component';
 
 @Component({
@@ -7,11 +8,11 @@ import { SparklineComponent } from '../../sparkline/sparkline.component';
     templateUrl: './fan.component.html',
     styleUrls: ['./fan.component.scss']
 })
-export class FanComponent implements AfterViewInit, OnInit {
+export class FanComponent implements AfterViewInit, DoCheck, OnInit {
     @Input() index!: number;
+    @Input() fan!: fan;
     fanId!: string;
 
-    rpm: number = 0;
     animationDuration!: number;
     animationDurationStyle = `${this.animationDuration}s`;
     newAnimationDuration: number = 0;
@@ -21,11 +22,27 @@ export class FanComponent implements AfterViewInit, OnInit {
     
     @ViewChild(SparklineComponent)
     private sparkline!: SparklineComponent;
+    
+    @ViewChild('fanImage') set content(content: ElementRef) {
+        if(content) {
+            this.fanImage = content;
+            this.fanImage.nativeElement.value = this.fanImage;
+
+            if (this.animationDuration === undefined && this.newAnimationDuration !== undefined) {
+                this.updateAnimationDuration();
+            }
+        }
+    }
+    private fanImage!: ElementRef;
 
     constructor() { }
 
     ngOnInit(): void {
         this.fanId = `fan-${this.index}`;
+    }
+
+    ngDoCheck(): void {
+        this.updateFanSpeed();
     }
 
     ngAfterViewInit(): void {
@@ -68,14 +85,16 @@ export class FanComponent implements AfterViewInit, OnInit {
         el!.style.animationDuration = this.animationDurationStyle;
     }
 
-    public updateFanSpeed(fanSpeed: number): void {
-        this.rpm = fanSpeed;
+    public updateFanSpeed(): void {
+        var fanSpeed = this.fan.Rpm;
         this.newAnimationDuration = this.calculateRpmAnimationDuration(fanSpeed);
-        if (this.animationDuration === undefined) {
+        if (this.animationDuration === undefined && this.fanImage !== undefined) {
             this.updateAnimationDuration();
         }
         
-        this.sparkline.addNewPoint(fanSpeed);
+        if (this.sparkline !== undefined) {
+            this.sparkline.addNewPoint(fanSpeed);
+        }
     }
 
     private calculateRpmAnimationDuration(fanSpeed: number): number {

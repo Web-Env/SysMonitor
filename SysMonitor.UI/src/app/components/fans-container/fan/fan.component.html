@@ -1,6 +1,6 @@
 <div class="fan-container">
     <div class="fan-image-container">
-        <svg class="fan-image" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fan-image" #fanImage height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
             <g>
                 <g>
                     <g>
@@ -17,7 +17,7 @@
     </div>
     
     <div class="fan-data-container">
-        <h2>{{ rpm }} RPM</h2>
+        <h2>{{ fan.Rpm }} RPM</h2>
 
         <app-sparkline [id]="fanId" ></app-sparkline>
     </div>

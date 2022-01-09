@@ -1,4 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { fan } from "src/app/models/fan.model";
 import { FanComponent } from './fan/fan.component';
 
 @Component({
@@ -6,27 +7,14 @@ import { FanComponent } from './fan/fan.component';
     templateUrl: './fans-container.component.html',
     styleUrls: ['./fans-container.component.scss']
 })
-export class FansContainerComponent implements AfterViewInit, OnInit {
-    @Input() fans: Array<number> = [];
+export class FansContainerComponent implements OnInit {
+    @Input() fans: Array<fan> = [];
     
     @ViewChildren(FanComponent)
     fanComponents!: QueryList<FanComponent>;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) { }
+    constructor() { }
 
     ngOnInit(): void {
-    }
-
-    ngAfterViewInit(): void {
-        this.fanComponents.toArray();
-        //this.updateFanSpeeds(this.fans);
-    }
-
-    public updateFanSpeeds(fanSpeeds: Array<number>) {
-        this.fanComponents.toArray().forEach((fanComponent, index) => {
-            fanComponent.updateFanSpeed(fanSpeeds[index]);
-        });
-        
-        this.changeDetectorRef.detectChanges();
     }
 }
