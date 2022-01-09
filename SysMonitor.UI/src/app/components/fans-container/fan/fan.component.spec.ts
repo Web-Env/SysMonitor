@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from "@angular/platform-browser";
-import { SparklineComponent } from "../sparkline/sparkline.component";
+import { SparklineComponent } from "../../sparkline/sparkline.component";
 
 import { FanComponent } from './fan.component';
 

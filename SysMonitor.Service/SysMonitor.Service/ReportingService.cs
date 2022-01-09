@@ -54,7 +54,7 @@ namespace SysMonitor.Service
 
                         var mapper = mappersConfig.CreateMapper();
 
-                        var hardware = HardwareHelper.Monitor(mapper);
+                        var hardware = HardwareHelper.Monitor(mapper, _hardwareReportModel);
 
                         var hardwareJson = JsonConvert.SerializeObject(hardware, Formatting.Indented,
                             new JsonSerializerSettings

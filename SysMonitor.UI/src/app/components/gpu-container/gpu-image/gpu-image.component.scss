@@ -2,18 +2,17 @@
     .gpu-image {
         height: 200px;
 
-        .fan {
+        .gpu-fan {
             transform-box: fill-box;
             transform-origin: center;
-            animation-duration: 2.5s;
 
-            //&.animated {
+            &.animated {
                 -webkit-animation: rotating infinite linear forwards;
                 -moz-animation: rotating infinite linear forwards;
                 -ms-animation: rotating infinite linear forwards;
                 -o-animation: rotating infinite linear forwards;
                 animation: rotating infinite linear forwards;
-            //}
+            }
         }
     }
 }

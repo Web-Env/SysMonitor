@@ -39,7 +39,7 @@ app.on('ready', () => {
             var client = net.connect(PIPE_PATH);
             
             client.on('data', (data) => {
-                //console.log(data.toString());
+                console.log(data.toString());
 
                 window.webContents.send('report', data.toString());
             });

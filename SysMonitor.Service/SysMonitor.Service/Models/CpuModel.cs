@@ -2,12 +2,10 @@
 {
     public class CpuModel
     {
-        public string Name { get; set; }
+        public float? Load { get; set; }
 
-        public double Load { get; set; }
+        public float? Temperature { get; set; }
 
-        public int Temperature { get; set; }
-
-        public int Clock { get; set; }
+        public float? Clock { get; set; }
     }
 }

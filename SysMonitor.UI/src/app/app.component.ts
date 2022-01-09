@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer } from 'electron';
-import { FansContainerComponent } from './fans-container/fans-container.component';
+import { FansContainerComponent } from './components/fans-container/fans-container.component';
+import { GpuContainerComponent } from "./components/gpu-container/gpu-container.component";
+import { gpu } from "./models/gpu.model";
 
 @Component({
     selector: 'app-root',
@@ -13,6 +15,10 @@ export class AppComponent implements OnInit {
     appVersion!: string;
 
     fans!: Array<number>;
+    gpu!: gpu;
+
+    @ViewChild(GpuContainerComponent)
+    private gpuContainer!: GpuContainerComponent;
 
     @ViewChild(FansContainerComponent)
     private fansContainer!: FansContainerComponent;
@@ -26,8 +32,16 @@ export class AppComponent implements OnInit {
 
         this.ipc.on('report', (event, data) => {
             let jsonData = JSON.parse(data);
+            
+            var fanData = jsonData.Fans.map((fan: any) => { return fan['Rpm']; });
+            var gpuData = jsonData.Gpu;
 
-            var fanData = jsonData.map((fan: any) => { return fan['Rpm']; });
+            if (this.gpu === undefined) {
+                this.gpu = gpuData;
+            }
+            else {
+                this.gpu = gpuData;
+            }
 
             if (this.fans === undefined) {
                 this.fans = fanData;
@@ -36,6 +50,8 @@ export class AppComponent implements OnInit {
             else {
                 this.fansContainer.updateFanSpeeds(fanData);
             }
+
+            this.changeDetectorRef.detectChanges();
         });
 
         this.ipc.on('app-version', (event, data) => {
