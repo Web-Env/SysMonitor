@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { memory } from "src/app/models/memory.model";
 import { SparklineComponent } from "../shared/sparkline/sparkline.component";
 
@@ -7,7 +7,7 @@ import { SparklineComponent } from "../shared/sparkline/sparkline.component";
     templateUrl: './memory-container.component.html',
     styleUrls: ['./memory-container.component.scss']
 })
-export class MemoryContainerComponent implements AfterViewInit, OnChanges, OnInit {
+export class MemoryContainerComponent implements AfterContentInit, OnChanges, OnInit {
     @Input() memory!: memory;
     
     @ViewChild(SparklineComponent)
@@ -21,7 +21,7 @@ export class MemoryContainerComponent implements AfterViewInit, OnChanges, OnIni
 
     ngOnInit(): void { }
 
-    ngAfterViewInit(): void {
+    ngAfterContentInit(): void {
         this.memoryCapacityString = `${this.memory.Capacity}GB`
     }
 

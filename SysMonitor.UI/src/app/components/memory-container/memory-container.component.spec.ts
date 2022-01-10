@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { memory } from "src/app/models/memory.model";
 
 import { MemoryContainerComponent } from './memory-container.component';
 
@@ -16,6 +17,10 @@ describe('MemoryContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MemoryContainerComponent);
     component = fixture.componentInstance;
+    var testMemory = new memory();
+    testMemory.Capacity = 32;
+    testMemory.Used = 16;
+    component.memory = testMemory;
     fixture.detectChanges();
   });
 

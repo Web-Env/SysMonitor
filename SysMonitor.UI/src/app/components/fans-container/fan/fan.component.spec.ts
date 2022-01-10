@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { fan } from "src/app/models/fan.model";
 import { SparklineComponent } from "../../shared/sparkline/sparkline.component";
 
 import { FanComponent } from './fan.component';
@@ -21,6 +22,10 @@ describe('FanComponent', () => {
         fixture = TestBed.createComponent(FanComponent);
         component = fixture.componentInstance;
         component.index = 0;
+        var testFan = new fan();
+        testFan.FanType = 0;
+        testFan.Rpm = 250;
+        component.fan = testFan;
         fixture.detectChanges();
     });
 
@@ -51,11 +56,11 @@ describe('FanComponent', () => {
         var fanElementAnimationDuration = fanElement.style.animationDuration;
         var sparkline = (component as any).sparkline;
 
-        expect(component.fan.Rpm).toEqual(500);
-        expect(component.animationDurationStyle).toEqual('2.4s');
-        expect(fanElementAnimationDuration).toEqual('2.4s');
-        expect(sparkline.points).toEqual([18.75]);
-        expect(sparkline.pointsString).toEqual('0, 18.75 ');
+        expect(component.fan.Rpm).toEqual(250);
+        expect(component.animationDurationStyle).toEqual('4.8s');
+        expect(fanElementAnimationDuration).toEqual('4.8s');
+        expect(sparkline.points).toEqual([9.375]);
+        expect(sparkline.pointsString).toEqual('0, 9.375 ');
     });
     
 });

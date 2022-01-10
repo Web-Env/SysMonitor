@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { gpu } from "src/app/models/gpu.model";
 import { SparklineComponent } from "../shared/sparkline/sparkline.component";
 
@@ -7,7 +7,7 @@ import { SparklineComponent } from "../shared/sparkline/sparkline.component";
     templateUrl: './gpu-container.component.html',
     styleUrls: ['./gpu-container.component.scss']
 })
-export class GpuContainerComponent implements AfterViewInit, OnChanges, OnInit {
+export class GpuContainerComponent implements AfterContentInit, OnChanges, OnInit {
     @Input() gpu!: gpu;
     @Input() gpuModel!: string;
     
@@ -23,7 +23,7 @@ export class GpuContainerComponent implements AfterViewInit, OnChanges, OnInit {
     ngOnInit(): void {
     }
 
-    ngAfterViewInit(): void {
+    ngAfterContentInit(): void {
         this.gpuMemoryCapacityString = `${Math.round(this.gpu.MemoryCapacity / 1000)}GB`
     }
 
