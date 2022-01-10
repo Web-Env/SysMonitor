@@ -10,7 +10,7 @@ export class SparklineComponent implements OnInit {
 
     pointsString: string = '';
     points: Array<number> = [];
-    maxPoint: number = 2000;
+    @Input() maxPoint: number = 2000;
     maxPointsLength: number = 60;
     xAxisIndexStep: number = 150 / this.maxPointsLength;
 

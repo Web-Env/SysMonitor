@@ -2,18 +2,18 @@
 {
     public class GpuModel
     {
-        public string Name { get; set; }
+        public float? Load { get; set; }
 
-        public double Load { get; set; }
+        public float? Temperature { get; set; }
 
-        public int Temperature { get; set; }
+        public float? CoreClock { get; set; }
 
-        public int CoreClock { get; set; }
+        public float? MemoryClock { get; set; }
 
-        public int MemoryClock { get; set; }
+        public float? MemoryUsed { get; set; }
 
-        public int MemoryCapacity { get; set; }
+        public float? MemoryCapacity { get; set; }
 
-        public int MemoryUsed { get; set; }
+        public float? FanRpm { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+@import "src/assets/scss/colours";
+
+.fan-title-container {
+    .fan-title {
+        color: $primary-foreground-colour;
+    }
+}
+
+.fans-container {
+    width: 100%;
+    max-width: 200px;
+
+    display: flex;
+    justify-content: space-between;
+}

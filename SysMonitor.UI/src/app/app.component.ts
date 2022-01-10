@@ -1,6 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer } from 'electron';
-import { FansContainerComponent } from './fans-container/fans-container.component';
+
+import { FansContainerComponent } from './components/fans-container/fans-container.component';
+import { GpuContainerComponent } from "./components/gpu-container/gpu-container.component";
+
+import { cpu } from "./models/cpu.model";
+import { memory } from "./models/memory.model";
+import { gpu } from "./models/gpu.model";
+import { fan } from "./models/fan.model";
 
 @Component({
     selector: 'app-root',
@@ -12,7 +19,16 @@ export class AppComponent implements OnInit {
 
     appVersion!: string;
 
-    fans!: Array<number>;
+    cpu!: cpu;
+    memory!: memory;
+    gpu!: gpu;
+    fans!: Array<fan>;
+
+    cpuModel!: string;
+    gpuModel!: string;
+
+    @ViewChild(GpuContainerComponent)
+    private gpuContainer!: GpuContainerComponent;
 
     @ViewChild(FansContainerComponent)
     private fansContainer!: FansContainerComponent;
@@ -27,15 +43,31 @@ export class AppComponent implements OnInit {
         this.ipc.on('report', (event, data) => {
             let jsonData = JSON.parse(data);
 
-            var fanData = jsonData.map((fan: any) => { return fan['Rpm']; });
+            this.cpu = jsonData.Cpu;
+            this.cpuModel = jsonData.CpuModel;
 
-            if (this.fans === undefined) {
-                this.fans = fanData;
-                this.changeDetectorRef.detectChanges();
+            this.memory = jsonData.Memory;
+            
+            var gpuData = jsonData.Gpu;
+            this.gpuModel = jsonData.GpuModel;
+            if (this.gpu === undefined) {
+                this.gpu = gpuData;
             }
             else {
-                this.fansContainer.updateFanSpeeds(fanData);
+                this.gpu = gpuData;
             }
+            
+            var fanData = jsonData.Fans;
+            if (this.fans === undefined) {
+                this.fans = fanData;
+            }
+            else {
+               this.fans.forEach((fan, index) => {
+                   this.fans[index].Rpm = fanData[index].Rpm;
+               });
+            }
+
+            this.changeDetectorRef.detectChanges();
         });
 
         this.ipc.on('app-version', (event, data) => {

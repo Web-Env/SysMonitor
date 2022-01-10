@@ -1,0 +1,34 @@
+@import "src/assets/scss/colours";
+
+.key-value-text-container {
+    min-width: 270px;
+
+    position: relative;
+
+    display: flex;
+
+    p {
+        margin: 0 5px;
+    }
+
+    .key-text {
+        color: $secondary-foreground-colour;
+
+        position: absolute;
+        left: 0;
+
+        font-size: 1.35em;
+        line-height: 1.35em;
+    }
+
+    .value-text {
+        color: $primary-foreground-colour;
+
+        margin-left: 5px;
+
+        position: absolute;
+        right: 0;
+
+        font-size: 1.5em;
+    }
+}

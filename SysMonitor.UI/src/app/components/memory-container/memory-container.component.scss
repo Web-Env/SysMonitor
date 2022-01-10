@@ -1,0 +1,56 @@
+@import "src/assets/scss/colours";
+
+.memory-title-container {
+    .memory-title {
+        color: $primary-foreground-colour;
+    }
+}
+
+.memory-data-container {
+    margin-bottom: 50px;
+
+    display: flex;
+
+    .memory-info-container {
+        max-width: 1000px;
+
+        display: grid;
+        grid-template-areas:
+            "app-key-value-text"
+            "app-key-value-text";
+        grid-gap: 10px 15px;
+    }
+
+    .memory-image-container {
+        padding: 5px 30px 5px 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .memory-image {
+            svg {
+                height: 130px;
+            }
+        }
+
+        .memory-load-data-container {
+            padding: 5px 10px;
+
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+
+            h2 {
+                width: 100%;
+
+                color: $secondary-foreground-colour;
+
+                margin: 0 auto;
+
+                font-family: sans-serif;
+                text-align: center;
+            }
+        }
+    }
+}

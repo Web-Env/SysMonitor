@@ -1,0 +1,23 @@
+<div class="gpu-title-container">
+    <h3 class="gpu-title">{{ gpuModel }}</h3>
+</div>
+<div class="gpu-data-container">
+    <div class="gpu-image-container">
+        <app-gpu-image [rpm]=gpu.FanRpm></app-gpu-image>
+
+        <div class="gpu-fan-data-container">
+            <h2>{{ gpu.FanRpm }} RPM</h2>
+    
+            <app-sparkline [id]="'gpu-fan'"></app-sparkline>
+        </div>
+    </div>
+
+    <div class="gpu-info-container">
+        <app-key-value-text [keyText]="'Load'" [valueText]="gpu.Load + '%'"></app-key-value-text>
+        <app-key-value-text [keyText]="'Memory Clock'" [valueText]="gpu.MemoryClock + 'MHz'"></app-key-value-text>
+        <app-key-value-text [keyText]="'Temperature'" [valueText]="gpu.Temperature + '°C'"></app-key-value-text>
+        <app-key-value-text [keyText]="'Memory Used'" [valueText]="gpuMemoryUsedString"></app-key-value-text>
+        <app-key-value-text [keyText]="'Core Clock'" [valueText]="gpuCoreClockString"></app-key-value-text>
+        <app-key-value-text [keyText]="'Memory Capacity'" [valueText]="gpuMemoryCapacityString"></app-key-value-text>
+    </div>
+</div>

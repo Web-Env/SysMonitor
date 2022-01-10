@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LibreHardwareMonitor.Hardware;
 using SysMonitor.Service.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,19 +44,21 @@ namespace SysMonitor.Service.Helpers
             var hardware = computer.Hardware;
 
             hardwareReport.CpuModel = hardware.FirstOrDefault(h => h.HardwareType == HardwareType.Cpu)?.Name;
-            hardwareReport.MemoryCapacity = (double)(hardware.FirstOrDefault(h => h.HardwareType == HardwareType.Memory)?.Sensors?.Where(s => s.Identifier.ToString() == "/ram/data/0" || s.Identifier.ToString() == "/ram/data/1").Sum(s => s.Value));
 
             var gpuHardware = hardware.FirstOrDefault(h => h.HardwareType == HardwareType.GpuNvidia || h.HardwareType == HardwareType.GpuAmd);
             hardwareReport.GpuModel = gpuHardware?.Name;
-            hardwareReport.GpuMemoryCapacity = (double)(gpuHardware.Sensors?.FirstOrDefault(s => s.Identifier.ToString() == "/gpu-nvidia/0/smalldata/2").Value);
 
             computer.Close();
             return hardwareReport;
         }
 
-        public static List<FanModel> Monitor(IMapper mapper)
+        public static HardwareReportModel Monitor(IMapper mapper, HardwareReportModel hardwareReport)
         {
-            var fans = new List<FanModel>();
+            List<FanModel> fans = new List<FanModel>();
+            CpuModel cpu = new CpuModel();
+            MemoryModel memory = new MemoryModel();
+            GpuModel gpu = new GpuModel();
+
             Computer computer = new Computer
             {
                 IsCpuEnabled = true,
@@ -71,34 +74,111 @@ namespace SysMonitor.Service.Helpers
 
             foreach (IHardware hardware in computer.Hardware)
             {
-                foreach (IHardware subhardware in hardware.SubHardware)
+                if (hardware.HardwareType == HardwareType.Motherboard)
                 {
-                    foreach (ISensor sensor in subhardware.Sensors)
+                    foreach (IHardware subhardware in hardware.SubHardware)
                     {
-                        //Console.WriteLine("\t\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
+                        var fanSensors = subhardware.Sensors.Where(s => s.SensorType == SensorType.Fan && s.Value != 0);
+                        var fanSensorModels = MapHardwareClassesToModels<ISensor, FanModel>(mapper, fanSensors);
+
+                        var cpuFan = fanSensorModels?.FirstOrDefault();
+
+                        if (cpuFan != null)
+                        {
+                            cpuFan.FanType = FanType.Cpu;
+                        }
+
+                        fans.AddRange(fanSensorModels);
                     }
-
-                    var fanSensors = subhardware.Sensors.Where(s => s.SensorType == SensorType.Fan && s.Value != 0);
-                    var fanSensorModels = MapHardwareClassesToModels<ISensor, FanModel>(mapper, fanSensors);
-
-                    var cpuFan = fanSensorModels?.FirstOrDefault();
-
-                    if (cpuFan != null)
-                    {
-                        cpuFan.FanType = FanType.Cpu;
-                    }
-
-                    fans = fanSensorModels;
                 }
-
-                foreach (ISensor sensor in hardware.Sensors)
+                else if (hardware.HardwareType == HardwareType.Cpu)
                 {
-                    //Console.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
+                    float clocksCumulative = 0f;
+                    var clockCount = 0;
+
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total")
+                        {
+                            cpu.Load = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Temperature && sensor.Name == "CPU Package")
+                        {
+                            cpu.Temperature = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Clock)
+                        {
+                            clocksCumulative += sensor.Value.Value;
+                            clockCount++;
+                        }
+                    }
+
+                    cpu.Clock = clocksCumulative / clockCount;
+                }
+                else if (hardware.HardwareType == HardwareType.Memory)
+                {
+                    var memoryUsed = 0f;
+                    var memoryAvailable = 0f;
+
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Data && sensor.Name == "Memory Used")
+                        {
+                            memoryUsed = sensor.Value.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Data && sensor.Name == "Memory Available")
+                        {
+                            memoryAvailable = sensor.Value.Value;
+                        }
+                    }
+
+                    memory.Used = Math.Round(memoryUsed, 2);
+                    memory.Capacity = Math.Round(memoryUsed + memoryAvailable, 0);
+                }
+                else if (hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuNvidia)
+                {
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load && sensor.Name == "GPU Core")
+                        {
+                            gpu.Load = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Temperature && sensor.Name == "GPU Core")
+                        {
+                            gpu.Temperature = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Clock && sensor.Name == "GPU Core")
+                        {
+                            gpu.CoreClock = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Clock && sensor.Name == "GPU Memory")
+                        {
+                            gpu.MemoryClock = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.SmallData && sensor.Name == "GPU Memory Used")
+                        {
+                            gpu.MemoryUsed = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.SmallData && sensor.Name == "GPU Memory Total")
+                        {
+                            gpu.MemoryCapacity = sensor.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Fan && sensor.Name == "GPU")
+                        {
+                            gpu.FanRpm = sensor.Value;
+                        }
+                    }
                 }
             }
 
             computer.Close();
-            return fans;
+
+            hardwareReport.Cpu = cpu;
+            hardwareReport.Memory = memory;
+            hardwareReport.Gpu = gpu;
+            hardwareReport.Fans = fans;
+
+            return hardwareReport;
         }
 
         private static TModel MapHardwareClassToModel<TEntity, TModel>(IMapper mapper, TEntity hardwareClass)
