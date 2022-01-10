@@ -26,7 +26,7 @@ app.on('ready', () => {
         })
     );
 
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
 
     ipcMain.on('app-version', (event, args) => {
         window.webContents.send('app-version', version);
