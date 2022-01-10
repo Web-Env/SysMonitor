@@ -1,8 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import "src/assets/scss/colours";
+
 body {
-    background-color: #323130;
+    background-color: $primary-background-colour;
+
+    font-family: sans-serif;
 }
 
 svg {
-    fill: #c8c6c4;
+    fill: $primary-foreground-colour;
 }

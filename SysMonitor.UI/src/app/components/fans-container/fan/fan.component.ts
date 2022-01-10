@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, DoCheck, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
 import { fan } from "src/app/models/fan.model";
-import { SparklineComponent } from '../../sparkline/sparkline.component';
+import { SparklineComponent } from '../../shared/sparkline/sparkline.component';
 
 @Component({
     selector: 'app-fan',

@@ -3,7 +3,11 @@
         <p class="version">v{{ appVersion }}</p>
     </div>
 
-    <app-gpu-container *ngIf="gpu != undefined" [gpu]="gpu"></app-gpu-container>
+    <app-cpu-container *ngIf="gpu != undefined" [cpuModel]="cpuModel" [cpu]="cpu"></app-cpu-container>
+
+    <app-memory-container *ngIf="memory != undefined" [memory]="memory"></app-memory-container>
+
+    <app-gpu-container *ngIf="gpu != undefined" [gpuModel]="gpuModel" [gpu]="gpu"></app-gpu-container>
 
     <div class="fan-container">
         <app-fans-container *ngIf="fans != undefined" [fans]="fans"></app-fans-container>

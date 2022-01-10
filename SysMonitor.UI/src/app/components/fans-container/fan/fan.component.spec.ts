@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from "@angular/platform-browser";
-import { SparklineComponent } from "../../sparkline/sparkline.component";
+import { SparklineComponent } from "../../shared/sparkline/sparkline.component";
 
 import { FanComponent } from './fan.component';
 
@@ -46,13 +45,13 @@ describe('FanComponent', () => {
     });
 
     it('#updateFanSpeed should update the element and component properties correctly', () => {
-        component.updateFanSpeed(500);
+        component.updateFanSpeed();
         
         var fanElement = fixture.debugElement.nativeElement.querySelector('#fan-0');
         var fanElementAnimationDuration = fanElement.style.animationDuration;
         var sparkline = (component as any).sparkline;
 
-        expect(component.rpm).toEqual(500);
+        expect(component.fan.Rpm).toEqual(500);
         expect(component.animationDurationStyle).toEqual('2.4s');
         expect(fanElementAnimationDuration).toEqual('2.4s');
         expect(sparkline.points).toEqual([18.75]);

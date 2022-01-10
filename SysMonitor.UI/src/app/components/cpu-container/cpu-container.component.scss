@@ -1,35 +1,40 @@
 @import "src/assets/scss/colours";
 
-.gpu-title-container {
-    .gpu-title {
+.cpu-title-container {
+    .cpu-title {
         color: $primary-foreground-colour;
     }
 }
 
-.gpu-data-container {
+.cpu-data-container {
     margin-bottom: 50px;
 
     display: flex;
 
-    .gpu-info-container {
+    .cpu-info-container {
         max-width: 1000px;
 
         display: grid;
         grid-template-areas: 
             'app-key-value-text app-key-value-text'
-            'app-key-value-text app-key-value-text'
-            'app-key-value-text app-key-value-text';
+            'app-key-value-text';
         grid-gap: 10px 15px;
     }
     
-    .gpu-image-container {
+    .cpu-image-container {
         padding: 5px 30px 5px 0;
 
         display: flex;
         justify-content: center;
         align-items: center;
 
-        .gpu-fan-data-container {
+        .cpu-image {
+            svg {
+                height: 140px;
+            }
+        }
+
+        .cpu-load-data-container {
             padding: 5px 10px;
 
             h2 {
@@ -43,5 +48,14 @@
                 text-align: center;
             }
         }
+    }
+
+    .divider {
+        width: 80%;
+        height: 1.5px;
+
+        background-color: $secondary-foreground-colour;
+
+        margin: auto;
     }
 }

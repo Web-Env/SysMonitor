@@ -1,9 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer } from 'electron';
+
 import { FansContainerComponent } from './components/fans-container/fans-container.component';
 import { GpuContainerComponent } from "./components/gpu-container/gpu-container.component";
-import { fan } from "./models/fan.model";
+
+import { cpu } from "./models/cpu.model";
+import { memory } from "./models/memory.model";
 import { gpu } from "./models/gpu.model";
+import { fan } from "./models/fan.model";
 
 @Component({
     selector: 'app-root',
@@ -15,8 +19,13 @@ export class AppComponent implements OnInit {
 
     appVersion!: string;
 
-    fans!: Array<fan>;
+    cpu!: cpu;
+    memory!: memory;
     gpu!: gpu;
+    fans!: Array<fan>;
+
+    cpuModel!: string;
+    gpuModel!: string;
 
     @ViewChild(GpuContainerComponent)
     private gpuContainer!: GpuContainerComponent;
@@ -33,17 +42,22 @@ export class AppComponent implements OnInit {
 
         this.ipc.on('report', (event, data) => {
             let jsonData = JSON.parse(data);
-            
-            var fanData = jsonData.Fans;
-            var gpuData = jsonData.Gpu;
 
+            this.cpu = jsonData.Cpu;
+            this.cpuModel = jsonData.CpuModel;
+
+            this.memory = jsonData.Memory;
+            
+            var gpuData = jsonData.Gpu;
+            this.gpuModel = jsonData.GpuModel;
             if (this.gpu === undefined) {
                 this.gpu = gpuData;
             }
             else {
                 this.gpu = gpuData;
             }
-
+            
+            var fanData = jsonData.Fans;
             if (this.fans === undefined) {
                 this.fans = fanData;
             }
