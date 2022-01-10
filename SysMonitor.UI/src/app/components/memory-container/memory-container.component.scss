@@ -15,12 +15,12 @@
         max-width: 1000px;
 
         display: grid;
-        grid-template-areas: 
-            'app-key-value-text'
-            'app-key-value-text';
+        grid-template-areas:
+            "app-key-value-text"
+            "app-key-value-text";
         grid-gap: 10px 15px;
     }
-    
+
     .memory-image-container {
         padding: 5px 30px 5px 0;
 
@@ -43,11 +43,11 @@
 
             h2 {
                 width: 100%;
-    
+
                 color: $secondary-foreground-colour;
-    
+
                 margin: 0 auto;
-    
+
                 font-family: sans-serif;
                 text-align: center;
             }
